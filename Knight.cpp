@@ -1,6 +1,6 @@
 #include "Knight.h"
 #include <iostream>
-
+#include "Pawn.h"
 //the function return if the player can move the move he wanted to make and if not return why
 //move - the move the player wanted to make in this struct <dest><source> for example: "e4e5"
 //the function return the code that need to sent to the fronted
@@ -20,7 +20,7 @@ int Knight::Move(std::string move)
 int Knight::IsValid(std::string move)
 {
     bool legal = false;
-    int heg = 1, wid = 2,temp;
+    int heg = 1, wid = 2,temp = 0;
     if (move[0] > CELLING || move[0] < FLOOR ||//checking if the source height is in the board
         move[2] > CELLING || move[2] < FLOOR ||//checking if the destination height is in the board
         move[1] > RIGHT_WALL || move[1] < LEFT_WALL ||//checking if the source width is in the board
@@ -35,11 +35,11 @@ int Knight::IsValid(std::string move)
     //check code 7 is before code 6 because 7 is a specific code 6 check
     for (int i = 0; i < 4;i++)//the loop activate four times because there are 8 options and we check to each time so 8/2 = 4
     {
-        if (std::string(1,move[0]) + move[1] == std::to_string(move[2] - heg) + std::to_string(move[3] - wid))
+        if (std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] - heg)) + static_cast<char>(move[3] - wid))
         {
             legal = true;
         }
-        if (std::string(1, move[0]) + move[1] == std::to_string(move[2] - heg) + std::to_string(move[3] + wid))
+        if (std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] - heg)) + static_cast<char>(move[3] + wid))
         {
             legal = true;
         }
