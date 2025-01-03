@@ -6,11 +6,11 @@
 
 class Manager
 {
-private:
+public:
 	IPiece* board[8][8];
 public:
 	void play();
-private:
+public:
 	void InitializingBoard(std::string gameBoard);
 	Pipe connectFronted();
 	IPiece* type(std::string move);

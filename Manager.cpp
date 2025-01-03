@@ -1,11 +1,5 @@
 #include "Manager.h"
 
-int main()
-{
-	Manager m = Manager();
-	m.play();
-	return 1;
-}
 void Manager::play()
 {
 	IPiece* piece = nullptr;//the IPiece to contain the piece we are now working on
@@ -43,7 +37,7 @@ void Manager::play()
 		}
 		else//check the piece error codes(5,6,7)
 		{
-			pieceCode = piece->Move(move);
+			pieceCode = piece->Move(move,board);
 			codeMsg[0] = static_cast<char>(pieceCode);
 		}
 		if (isCheck(move))
@@ -143,5 +137,20 @@ IPiece* Manager::type(std::string move)
 bool Manager::selfCheck(std::string move)
 {
 	//need to be fullfil
+
 	return false;
+}
+
+bool Manager::isCheck(std::string move)
+{
+	return false;
+}
+
+int main()
+{
+	Manager m = Manager();
+	m.InitializingBoard("rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR0");
+	m.board[0][1]->Move("b8c6", m.board);
+
+	return 1;
 }
