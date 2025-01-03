@@ -1,14 +1,16 @@
 #include "Knight.h"
 #include <iostream>
-#include "Pawn.h"
+
 //the function return if the player can move the move he wanted to make and if not return why
 //move - the move the player wanted to make in this struct <dest><source> for example: "e4e5"
 //the function return the code that need to sent to the fronted
-int Knight::Move(std::string move)
+int Knight::Move(std::string move, IPiece* board[8][8])
 {
     int code = 0;
     if (!(code = IsValid(move)))//check if we pass the check as a knight
     {
+        board[RIGHT_WALL - move[3]][move[2] - FLOOR] = board[RIGHT_WALL - move[1]][move[0] - FLOOR];
+        board[RIGHT_WALL - move[1]][move[0] - FLOOR] = nullptr;
         return 0;
     }
     return code;
