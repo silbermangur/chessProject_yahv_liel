@@ -31,7 +31,8 @@ void Manager::play()
 		{
 			codeMsg[0] = '3';
 		}
-		else if (selfCheck(move))//check error code 4(self check)
+
+		else if (selfCheck(move, piece, whiteTurn))//check error code 4(self check)
 		{
 			codeMsg[0] = '4';
 		}
@@ -40,16 +41,16 @@ void Manager::play()
 			pieceCode = piece->Move(move,board);
 			codeMsg[0] = static_cast<char>(pieceCode);
 		}
-		if (isCheck(move))
+		if (codeMsg[0] != CODE_PASS && isCheck(move))
 		{
 			//need to be fullfill
 		}
-		if (codeMsg[0] == '0')//check if it pass all the tests
+		if (codeMsg[0] == CODE_PASS)//check if it pass all the tests
 		{
 			//need to be fullfill
 			whiteTurn = not whiteTurn;
 		}
-		codeMsg[0] = '0';//setting for the next move to 0
+		codeMsg[0] = CODE_PASS;//setting for the next move to 0
 		fronted.sendMessageToGraphics(codeMsg);//sent the code messege
 	}
 	fronted.close();
@@ -61,31 +62,56 @@ void Manager::InitializingBoard(std::string gameBoard)
 {
 	for (int i = 0;i < 64;i++)
 	{
-		if (gameBoard[i] != '#')
+		if (gameBoard[i] != CLEAR_SPACE)
 		{
-			if (gameBoard[i] == 'n' || gameBoard[i] == 'N')
+			if (gameBoard[i] == BLACK_KNIGHT || gameBoard[i] == WHITE_KNIGHT)
 			{
 				board[i / 8][i % 8] = new Knight();
+				if (gameBoard[i] == BLACK_KNIGHT)//if it a black piece it should be known as one
+				{
+					board[i / 8][i % 8]->isWhite = false;
+				}
 			}
-			else if (gameBoard[i] == 'k' || gameBoard[i] == 'K')
+			else if (gameBoard[i] == BLACK_KING || gameBoard[i] == WHITE_KING)
 			{
 				board[i / 8][i % 8] = new King();
+				if (gameBoard[i] == BLACK_KING)//if it a black piece it should be known as one
+				{
+					board[i / 8][i % 8]->isWhite = false;
+				}
 			}
-			else if (gameBoard[i] == 'p' || gameBoard[i] == 'P')
+			else if (gameBoard[i] == BLACK_PAWN || gameBoard[i] == WHITE_PAWN)
 			{
 				board[i / 8][i % 8] = new Pawn();
+				if (gameBoard[i] == BLACK_PAWN)//if it a black piece it should be known as one
+				{
+					board[i / 8][i % 8]->isWhite = false;
+				}
 			}
-			//else if (gameBoard[i] == 'q' || gameBoard[i] == 'Q')
+			//else if (gameBoard[i] == BLACK_QUEEN || gameBoard[i] == WHITE_QUEEN)
 			//{
 			//	board[i/8][i%8] = new Queen();
+			//	if (gameBoard[i] == BLACK_QUEEN)//if it a black piece it should be known as one
+			//	{
+			//		board[i / 8][i % 8]->isWhite = false;
+			//	}
+			// 
 			//}	
-			//else if (gameBoard[i] == 'r' || gameBoard[i] == 'R')
+			//else if (gameBoard[i] == BLACK_ROOK || gameBoard[i] == WHITE_ROOK)
 			//{
 			//	board[i/8][i%8] = new Rook();
+			//	if (gameBoard[i] == BLACK_ROOK)//if it a black piece it should be known as one
+			//	{
+			//		board[i / 8][i % 8]->isWhite = false;
+			//	}
 			//}
-			//else if (gameBoard[i] == 'b' || gameBoard[i] == 'B')
+			//else if (gameBoard[i] == BLACK_BISHOP || gameBoard[i] == WHITE_BISHOP)
 			//{
 			//	board[i/8][i%8] = new Bishop();
+			//	if (gameBoard[i] == BLACK_BISHOP)//if it a black piece it should be known as one
+			//	{
+			//		board[i / 8][i % 8]->isWhite = false;
+			//	}
 			//}
 		}
 	}
@@ -134,13 +160,58 @@ IPiece* Manager::type(std::string move)
 //the function check if the current move create a selkf check
 //move - the current move done by player
 //the function return true if it does create a self check if not return false
-bool Manager::selfCheck(std::string move)
+bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 {
-	//need to be fullfil
+	IPiece* killed = board[RIGHT_WALL - move[3]][move[2] - FLOOR];//saving the killed piece because it still can be an ilegal move
+	//do the move requsted
+	board[RIGHT_WALL - move[3]][move[2] - FLOOR] = board[RIGHT_WALL - move[1]][move[0] - FLOOR];
+	board[RIGHT_WALL - move[1]][move[0] - FLOOR] = nullptr;
+	
+	std::string kingPlace;
+	bool kingfound = false;
 
+	//finding the king place
+	for (int i = 0; i < 8 && !kingfound;i++)
+	{
+		for (int j = 0;j < 8 && !kingfound;j++)
+		{
+			if (board[i][j]->IsValid("e4e5") && board[i][j]->IsValid("e4d3") && !board[i][j]->IsValid("e4e6"))//check if it a king
+			{																								  //(by a combination of moves only the king return answars like this)
+				kingPlace = std::string(1, static_cast<char>(i + FLOOR)) + static_cast<char>(8 - j);
+				!kingfound;
+			}
+		}
+	}
+	
+	//checking if a check is heppening
+	for (int i = 0; i < 8;i++)
+	{
+		for (int j = 0;j < 8;j++)
+		{
+			if (!board[i][j]->isWhite == whiteTurn)//checking if the the other color do the check to the current color playing
+			{
+				//checking if the move is avaliable  for the piece to do
+				if (board[i][j]->IsValid(std::string(2, static_cast<char>(i + FLOOR)) + static_cast<char>(8 - j) + kingPlace) == 0)
+				{
+					//doing the move backwards to does mot destroyd the game
+					board[RIGHT_WALL - move[1]][move[0] - FLOOR] = board[RIGHT_WALL - move[3]][move[2] - FLOOR];
+
+					//returning the piece that was killed to her place
+					board[RIGHT_WALL - move[3]][move[2] - FLOOR] = killed;
+
+					//if ths piece avaliable of the move returning true
+					return true;
+				}
+			}
+		}
+	}
+	//if there aren't a piece that can do a move to kill the king returning false
 	return false;
 }
 
+//the function check if there a check happened after the move succeced
+// move - the current move
+// return true if there are a check and false if there arent a check 
 bool Manager::isCheck(std::string move)
 {
 	return false;
