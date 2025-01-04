@@ -10,6 +10,7 @@
 class IPiece
 {
 public:
+	bool isWhite = true;//initialize at true because we asuume it a white piece if else we change it to black(fasle)
 	virtual int Move(std::string,IPiece* board[8][8]) = 0;//The function that move the piece if the piece can move
 	virtual int IsValid(std::string) = 0;//the function check if the piece can move
 };
