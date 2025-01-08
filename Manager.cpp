@@ -177,7 +177,7 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 	{
 		for (int j = 0;j < 8 && !kingfound;j++)
 		{
-			if (board[i][j]->IsValid("e4e5") && board[i][j]->IsValid("e4d3") && !board[i][j]->IsValid("e4e6"))//check if it a king
+			if (board[i][j]->IsValid("e4e5") && board[i][j]->IsValid("e4d3") && !board[i][j]->IsValid("e4e6") && board[i][j]->isWhite != whiteTurn)//check if it a king
 			{																								  //(by a combination of moves only the king return answars like this)
 				kingPlace = std::string(1, static_cast<char>(i + FLOOR)) + static_cast<char>(8 - j);
 				kingfound = !kingfound;
