@@ -6,6 +6,12 @@
 #define LEFT_WALL '0'
 #define RIGHT_WALL '8'
 
+// defining the indexs in the string from froted
+#define SRC_LETTER 0
+#define SRC_NUM 1
+#define DST_LETTER 2
+#define DST_NUM 3
+
 
 class IPiece
 {
