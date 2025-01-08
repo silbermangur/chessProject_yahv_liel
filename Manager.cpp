@@ -26,8 +26,8 @@ void Manager::play()
 			codeMsg[0] = '2';
 		}
 		//check error code 3
-		else if (whiteTurn && isupper(gameString[(RIGHT_WALL - move[3]) * 8 + (move[2] - FLOOR +1)]) ||//white represented by an upercase letter
-			!whiteTurn && islower(gameString[(RIGHT_WALL - move[3]) * 8 + (move[2] - FLOOR +1)]))//black represent by lowercase letter
+		else if (whiteTurn && isupper(gameString[(RIGHT_WALL - move[DST_NUM]) * 8 + (move[DST_LETTER] - FLOOR +1)]) ||//white represented by an upercase letter
+			!whiteTurn && islower(gameString[(RIGHT_WALL - move[DST_NUM]) * 8 + (move[DST_LETTER] - FLOOR +1)]))//black represent by lowercase letter
 		{
 			codeMsg[0] = '3';
 		}
@@ -154,7 +154,7 @@ Pipe Manager::connectFronted()
 //the function return the piece that the player want to move 
 IPiece* Manager::type(std::string move)
 {
-	return board[move[0] - 'a' + 1][move[1] - '0'];
+	return board[move[SRC_LETTER] - 'a' + 1][move[SRC_NUM] - '0'];
 }
 
 //the function check if the current move create a self check
@@ -162,10 +162,10 @@ IPiece* Manager::type(std::string move)
 //the function return true if it does create a self check if not return false
 bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 {
-	IPiece* killed = board[RIGHT_WALL - move[3]][move[2] - FLOOR];//saving the killed piece because it still can be an ilegal move
+	IPiece* killed = board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR];//saving the killed piece because it still can be an ilegal move
 	//do the move requsted
-	board[RIGHT_WALL - move[3]][move[2] - FLOOR] = board[RIGHT_WALL - move[1]][move[0] - FLOOR];
-	board[RIGHT_WALL - move[1]][move[0] - FLOOR] = nullptr;
+	board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] = board[RIGHT_WALL - move[SRC_NUM]][move[0] - FLOOR];
+	board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = nullptr;
 	//variables for the king place
 	std::string kingPlace;
 	bool kingfound = false;
@@ -197,10 +197,10 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 				if (board[i][j]->IsValid(moveToKing) == 0 && isBlock(piece, moveToKing))
 				{
 					//doing the move backwards to does mot destroyd the game
-					board[RIGHT_WALL - move[1]][move[0] - FLOOR] = board[RIGHT_WALL - move[3]][move[2] - FLOOR];
+					board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = board[RIGHT_WALL - move[3]][move[DST_LETTER] - FLOOR];
 
 					//returning the piece that was killed to her place
-					board[RIGHT_WALL - move[3]][move[2] - FLOOR] = killed;
+					board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] = killed;
 
 					//if ths piece avaliable of the move returning true
 					return true;
