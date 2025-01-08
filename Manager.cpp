@@ -157,7 +157,7 @@ IPiece* Manager::type(std::string move)
 	return board[move[0] - 'a' + 1][move[1] - '0'];
 }
 
-//the function check if the current move create a selkf check
+//the function check if the current move create a self check
 //move - the current move done by player
 //the function return true if it does create a self check if not return false
 bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
@@ -166,9 +166,11 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 	//do the move requsted
 	board[RIGHT_WALL - move[3]][move[2] - FLOOR] = board[RIGHT_WALL - move[1]][move[0] - FLOOR];
 	board[RIGHT_WALL - move[1]][move[0] - FLOOR] = nullptr;
-	
+	//variables for the king place
 	std::string kingPlace;
 	bool kingfound = false;
+	//the string to check the move
+	std::string moveToKing;
 
 	//finding the king place
 	for (int i = 0; i < 8 && !kingfound;i++)
@@ -182,7 +184,7 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 			}
 		}
 	}
-	
+
 	//checking if a check is heppening
 	for (int i = 0; i < 8;i++)
 	{
@@ -190,8 +192,9 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 		{
 			if (!board[i][j]->isWhite == whiteTurn)//checking if the the other color do the check to the current color playing
 			{
+				moveToKing = std::string(2, static_cast<char>(i + FLOOR)) + static_cast<char>(8 - j) + kingPlace;
 				//checking if the move is avaliable  for the piece to do
-				if (board[i][j]->IsValid(std::string(2, static_cast<char>(i + FLOOR)) + static_cast<char>(8 - j) + kingPlace) == 0)
+				if (board[i][j]->IsValid(moveToKing) == 0 && isBlock(piece, moveToKing))
 				{
 					//doing the move backwards to does mot destroyd the game
 					board[RIGHT_WALL - move[1]][move[0] - FLOOR] = board[RIGHT_WALL - move[3]][move[2] - FLOOR];
@@ -225,3 +228,5 @@ int main()
 
 	return 1;
 }
+
+
