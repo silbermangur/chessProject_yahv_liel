@@ -6,11 +6,20 @@
 int Pawn::Move(std::string move, IPiece* board[8][8])
 {	
     int code = 0;
+    std::string saveOriginalMove = move;
+    if (!board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR]->isWhite)//if it a black piece we need the move from black precpective
+    {
+        move[SRC_LETTER] = (CELLING - move[SRC_LETTER] + FLOOR);
+        move[SRC_NUM] = (RIGHT_WALL - move[SRC_NUM] + LEFT_WALL);
+        move[DST_LETTER] = (CELLING - move[DST_LETTER] + FLOOR);
+        move[DST_NUM] = (RIGHT_WALL - move[DST_NUM] + LEFT_WALL);
+    }
     if (!(code = IsValid(move)))//check if we pass the check as a knight
     {
+        move = saveOriginalMove;
         _moves++;
-        board[RIGHT_WALL - move[3]][move[2] - FLOOR] = board[RIGHT_WALL - move[1]][move[0] - FLOOR];
-        board[RIGHT_WALL - move[1]][move[0] - FLOOR] = nullptr;
+        board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] = board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR];
+        board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = nullptr;
         return 0;
     }
     return code;
@@ -23,15 +32,15 @@ int Pawn::IsValid(std::string move)
 {
     int saveForSpacialCase = _moves;//it saves the bumbers of move allready done to succesfuly check code 6
     std::string c;
-    if (move[0] > CELLING || move[0] < FLOOR ||//checking if the source height is in the board
-        move[2] > CELLING || move[2] < FLOOR ||//checking if the destination height is in the board
-        move[1] > RIGHT_WALL || move[1] < LEFT_WALL ||//checking if the source width is in the board
-        move[3] > RIGHT_WALL || move[3] < LEFT_WALL)//checking if the destination width is in the board
+    if (move[SRC_LETTER] > CELLING || move[SRC_LETTER] < FLOOR ||//checking if the source height is in the board
+        move[DST_LETTER] > CELLING || move[DST_LETTER] < FLOOR ||//checking if the destination height is in the board
+        move[SRC_NUM] > RIGHT_WALL || move[SRC_NUM] < LEFT_WALL ||//checking if the source width is in the board
+        move[DST_NUM] > RIGHT_WALL || move[DST_NUM] < LEFT_WALL)//checking if the destination width is in the board
     {
         return 5;
     }
 
-    if (move[0] == move[2] && move[1] == move[3])//check if he try to move the piece to the same location
+    if (move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] == move[DST_NUM])//check if he try to move the piece to the same location
     {
         return 7;
     }
@@ -41,19 +50,20 @@ int Pawn::IsValid(std::string move)
     //because in here we does not have a connection with the main board
 
     //checking if the pawn do one of it regular move to nullify the number of moves he allready done
-    if (std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] - 1)) + static_cast<char>(move[3] - 1) ||//checking if he move in diagonal
-        std::string(1, move[0]) + move[1] == std::string(1, move[2]) + static_cast<char>(move[3] - 1))//checking if he goes up by one square
+    if ((move[SRC_NUM] == move[DST_NUM] - 1 || move[DST_NUM] == move[DST_NUM] + 1) && (move[SRC_LETTER] == move[DST_LETTER] + 1) ||//checking if he move in diagonal
+        (move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] == move[DST_NUM] - 1))//checking if he goes up by one square
     {
         _moves = 0;
     }
     //check code 6(if it ilegal move to do)
-    if (std::string(0, move[0]) + move[1] != std::string(1, static_cast<char>(move[2] - 1)) + static_cast<char>(move[3] - 1) &&//checking if he eat in diagonal
-        std::string(0, move[0]) + move[1] != std::string(1, move[2]) + static_cast<char>(move[3] - 1) &&//checking if he goes up by one square
-        std::string(0, move[0]) + move[1] != std::string(1, move[2]) + static_cast<char>(move[3] - 2) && _moves)//check if he goes by two squares up in the first move he does     
+    if (!((move[SRC_LETTER] == move[DST_LETTER] - 1 || move[DST_LETTER] == move[DST_LETTER] + 1) && (move[SRC_NUM] + 1 == move[DST_NUM])) &&//checking if he eat in diagonal
+        !(move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + 1 == move[DST_NUM]) &&//checking if he goes up by one square
+        !(move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + 2 == move[DST_NUM] && _moves == 0))//check if he goes by two squares up in the first move he does     
     {
         _moves = saveForSpacialCase;
         return 6;
     }
+    _moves++;
     _moves = saveForSpacialCase;
     return 0;
 }
