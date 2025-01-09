@@ -21,13 +21,14 @@ void Manager::play()
 		//reciving the message of the move
 		move = fronted.getMessageFromGraphics();
 		piece = type(move);//checking what is the piece in the place we want to move
-		if (!piece)//check error code 2
+		if (!piece || whiteTurn == !piece->isWhite)//check error code 2
 		{
 			codeMsg[0] = '2';
 		}
-		//check error code 3
-		else if (whiteTurn && isupper(gameString[(RIGHT_WALL - move[3]) * 8 + (move[2] - FLOOR +1)]) ||//white represented by an upercase letter
-			!whiteTurn && islower(gameString[(RIGHT_WALL - move[3]) * 8 + (move[2] - FLOOR +1)]))//black represent by lowercase letter
+		//check error code 3//need to be 
+		else if (board[(RIGHT_WALL - move[DST_NUM])][(move[DST_LETTER] - FLOOR)] != nullptr &&
+			( whiteTurn && board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR]->isWhite ||//check move white to white
+			!whiteTurn && !board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR]->isWhite ))//check move black to clack
 		{
 			codeMsg[0] = '3';
 		}
@@ -36,26 +37,58 @@ void Manager::play()
 		{
 			codeMsg[0] = '4';
 		}
-		else//check the piece error codes(5,6,7)
+		else//check the piece error codes(5,6,7)(6 error at pawn case part of it check in here because at the pawn itself 
+												//there is no connection to the board)
 		{
-			pieceCode = piece->Move(move,board);
-			codeMsg[0] = static_cast<char>(pieceCode);
-			if (codeMsg[0] == '0' && isBlock(piece,move))
+			pieceCode = piece->IsValid(move);
+			codeMsg[0] = static_cast<char>('0' + pieceCode);
+			/*if (codeMsg[0] == '0' && isBlock(piece,move))
+			{
+				codeMsg[0] = '6';
+			}*/
+		}
+		//if it a pawn
+		if (piece != nullptr  && piece->IsValid("e4e5") == 0 && piece->IsValid("e4f5") == 0 && !(piece->IsValid("e4e3") == 0))
+		{
+			std::string saveOriginalMove = move;
+			int addPlace = 1;
+			if (!piece->isWhite)//if it a black piece we need the move from black precpective
+			{
+				addPlace = -1;
+			}
+			//that move in digonal and he has nothing to kill
+			if ((move[SRC_LETTER] == move[DST_LETTER] - 1 || move[DST_LETTER] == move[DST_LETTER] + 1) && (move[SRC_NUM] + addPlace == move[DST_NUM]) &&
+				(board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr))
 			{
 				codeMsg[0] = '6';
 			}
+			//if he move up by one square and a piece is there
+			else if((move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + addPlace == move[DST_NUM]) &&//checking if he goes up by one square 
+				board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)
+			{
+				codeMsg[0] = '6';
+			}
+			//if he move up by two square and a piece is there
+			else if(move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + (2 * addPlace) == move[DST_NUM] &&
+				board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)
+			{
+				codeMsg[0] = '6';
+			}
+			move = saveOriginalMove;
 		}
+
 		if (codeMsg[0] != CODE_PASS && isCheck(move))
 		{
-			//need to be fullfill
+			codeMsg[0] = '1';
 		}
 		if (codeMsg[0] == CODE_PASS)//check if it pass all the tests
 		{
-			//need to be fullfill
+			piece->Move(move, board);
 			whiteTurn = not whiteTurn;
 		}
-		codeMsg[0] = CODE_PASS;//setting for the next move to 0
 		fronted.sendMessageToGraphics(codeMsg);//sent the code messege
+		codeMsg[0] = CODE_PASS;//setting for the next move to 0
+		
 	}
 	fronted.close();
 }
@@ -92,31 +125,31 @@ void Manager::InitializingBoard(std::string gameBoard)
 					board[i / 8][i % 8]->isWhite = false;
 				}
 			}
-			//else if (gameBoard[i] == BLACK_QUEEN || gameBoard[i] == WHITE_QUEEN)
-			//{
-			//	board[i/8][i%8] = new Queen();
-			//	if (gameBoard[i] == BLACK_QUEEN)//if it a black piece it should be known as one
-			//	{
-			//		board[i / 8][i % 8]->isWhite = false;
-			//	}
-			// 
-			//}	
-			//else if (gameBoard[i] == BLACK_ROOK || gameBoard[i] == WHITE_ROOK)
-			//{
-			//	board[i/8][i%8] = new Rook();
-			//	if (gameBoard[i] == BLACK_ROOK)//if it a black piece it should be known as one
-			//	{
-			//		board[i / 8][i % 8]->isWhite = false;
-			//	}
-			//}
-			//else if (gameBoard[i] == BLACK_BISHOP || gameBoard[i] == WHITE_BISHOP)
-			//{
-			//	board[i/8][i%8] = new Bishop();
-			//	if (gameBoard[i] == BLACK_BISHOP)//if it a black piece it should be known as one
-			//	{
-			//		board[i / 8][i % 8]->isWhite = false;
-			//	}
-			//}
+			else if (gameBoard[i] == BLACK_QUEEN || gameBoard[i] == WHITE_QUEEN)
+			{
+				board[i/8][i%8] = new Queen();
+				if (gameBoard[i] == BLACK_QUEEN)//if it a black piece it should be known as one
+				{
+					board[i / 8][i % 8]->isWhite = false;
+				}
+			 
+			}	
+			else if (gameBoard[i] == BLACK_ROOK || gameBoard[i] == WHITE_ROOK)
+			{
+				board[i/8][i%8] = new Rook();
+				if (gameBoard[i] == BLACK_ROOK)//if it a black piece it should be known as one
+				{
+					board[i / 8][i % 8]->isWhite = false;
+				}
+			}
+			else if (gameBoard[i] == BLACK_BISHOP || gameBoard[i] == WHITE_BISHOP)
+			{
+				board[i/8][i%8] = new Bishops();
+				if (gameBoard[i] == BLACK_BISHOP)//if it a black piece it should be known as one
+				{
+					board[i / 8][i % 8]->isWhite = false;
+				}
+			}
 		}
 	}
 }
@@ -158,7 +191,7 @@ Pipe Manager::connectFronted()
 //the function return the piece that the player want to move 
 IPiece* Manager::type(std::string move)
 {
-	return board[move[0] - 'a' + 1][move[1] - '0'];
+	return board[RIGHT_WALL - move[1]][move[0] - FLOOR];
 }
 
 bool Manager::isBlock(IPiece* piece, std::string move)
@@ -251,7 +284,7 @@ bool Manager::isBlock(IPiece* piece, std::string move)
 		}
 		return true;
 	}
-	else if (piece->IsValid("e4e5") && piece->IsValid("e4f3") && !piece->IsValid("e4d3"))//check if it pawn
+	else if (piece->IsValid("e4e5") && piece->IsValid("e4f5") && !piece->IsValid("e4e3"))//check if it pawn
 	{
 		if (board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr || // 
 			board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR]->isWhite == piece->isWhite)
@@ -363,9 +396,10 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 	{
 		for (int j = 0;j < 8 && !kingfound;j++)
 		{
-			if (board[i][j]->IsValid("e4e5") && board[i][j]->IsValid("e4d3") && !board[i][j]->IsValid("e4e6") && board[i][j]->isWhite != whiteTurn)//check if it a king
+			if (board[i][j] != nullptr &&
+				board[i][j]->IsValid("e4e5") && board[i][j]->IsValid("e4d3") && !board[i][j]->IsValid("e4e6") && board[i][j]->isWhite != whiteTurn)//check if it a king
 			{																								  //(by a combination of moves only the king return answars like this)
-				kingPlace = std::string(1, static_cast<char>(i + FLOOR)) + static_cast<char>(8 - j);
+				kingPlace = std::string(1, static_cast<char>(i + FLOOR)) + static_cast<char>(RIGHT_WALL - j);
 				!kingfound;
 			}
 		}
@@ -376,9 +410,9 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 	{
 		for (int j = 0;j < 8;j++)
 		{
-			if (!board[i][j]->isWhite == whiteTurn)//checking if the the other color do the check to the current color playing
+			if (board[i][j] != nullptr && !board[i][j]->isWhite == whiteTurn)//checking if the the other color do the check to the current color playing
 			{
-				moveToKing = std::string(2, static_cast<char>(i + FLOOR)) + static_cast<char>(8 - j) + kingPlace;
+				moveToKing = std::string(2, static_cast<char>(i + FLOOR)) + static_cast<char>(RIGHT_WALL - j) + kingPlace;
 				//checking if the move is avaliable  for the piece to do
 				if (board[i][j]->IsValid(moveToKing) == 0 && isBlock(piece,moveToKing))
 				{
@@ -394,6 +428,11 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 			}
 		}
 	}
+	//doing the move backwards to does mot destroyd the game
+	board[RIGHT_WALL - move[1]][move[0] - FLOOR] = board[RIGHT_WALL - move[3]][move[2] - FLOOR];
+
+	//returning the piece that was killed to her place
+	board[RIGHT_WALL - move[3]][move[2] - FLOOR] = killed;
 	//if there aren't a piece that can do a move to kill the king returning false
 	return false;
 }
@@ -409,8 +448,7 @@ bool Manager::isCheck(std::string move)
 int main()
 {
 	Manager m = Manager();
-	m.InitializingBoard("rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR0");
-	m.board[0][1]->Move("b8c6", m.board);
+	m.play();
 
 	return 1;
 }
