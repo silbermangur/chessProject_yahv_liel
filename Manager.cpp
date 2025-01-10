@@ -40,42 +40,22 @@ void Manager::play()
 		else//check the piece error codes(5,6,7)(6 error at pawn case part of it check in here because at the pawn itself 
 												//there is no connection to the board)
 		{
-			pieceCode = piece->IsValid(move);
-			codeMsg[0] = static_cast<char>('0' + pieceCode);
-			/*if (codeMsg[0] == '0' && isBlock(piece,move))
+			//if it a pawn that cant to his move
+			if (piece->IsValid("e4e5") == 0 && piece->IsValid("e4f5") == 0 && !(piece->IsValid("e4e3") == 0) && pawnEatCheck(move,piece))
 			{
 				codeMsg[0] = '6';
-			}*/
+			}
+			else
+			{
+				pieceCode = piece->Move(move, board);
+				codeMsg[0] = static_cast<char>('0' + pieceCode);
+				/*if (codeMsg[0] == '0' && isBlock(piece,move))
+				{
+					codeMsg[0] = '6';
+				}*/
+			}
 		}
-		//if it a pawn
-		if (piece != nullptr  && piece->IsValid("e4e5") == 0 && piece->IsValid("e4f5") == 0 && !(piece->IsValid("e4e3") == 0))
-		{
-			std::string saveOriginalMove = move;
-			int addPlace = 1;
-			if (!piece->isWhite)//if it a black piece we need the move from black precpective
-			{
-				addPlace = -1;
-			}
-			//that move in digonal and he has nothing to kill
-			if ((move[SRC_LETTER] == move[DST_LETTER] - 1 || move[DST_LETTER] == move[DST_LETTER] + 1) && (move[SRC_NUM] + addPlace == move[DST_NUM]) &&
-				(board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr))
-			{
-				codeMsg[0] = '6';
-			}
-			//if he move up by one square and a piece is there
-			else if((move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + addPlace == move[DST_NUM]) &&//checking if he goes up by one square 
-				board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)
-			{
-				codeMsg[0] = '6';
-			}
-			//if he move up by two square and a piece is there
-			else if(move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + (2 * addPlace) == move[DST_NUM] &&
-				board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)
-			{
-				codeMsg[0] = '6';
-			}
-			move = saveOriginalMove;
-		}
+		
 
 		if (codeMsg[0] != CODE_PASS && isCheck(move))
 		{
@@ -83,7 +63,6 @@ void Manager::play()
 		}
 		if (codeMsg[0] == CODE_PASS)//check if it pass all the tests
 		{
-			piece->Move(move, board);
 			whiteTurn = not whiteTurn;
 		}
 		fronted.sendMessageToGraphics(codeMsg);//sent the code messege
@@ -192,6 +171,36 @@ Pipe Manager::connectFronted()
 IPiece* Manager::type(std::string move)
 {
 	return board[RIGHT_WALL - move[1]][move[0] - FLOOR];
+}
+
+bool Manager::pawnEatCheck(std::string move,IPiece* piece)
+{
+	std::string saveOriginalMove = move;
+	int addPlace = 1;
+	if (!piece->isWhite)//if it a black piece we need the move from black precpective
+	{
+		addPlace = -1;
+	}
+	//that move in digonal and he has nothing to kill
+	if (((move[SRC_LETTER] == move[DST_LETTER] - 1 || move[SRC_LETTER] == move[DST_LETTER] + 1) && (move[SRC_NUM] + addPlace == move[DST_NUM])) &&
+		(board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] == nullptr))
+	{
+		return true;
+	}
+	//if he move up by one square and a piece is there
+	else if ((move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + addPlace == move[DST_NUM]) &&//checking if he goes up by one square 
+		board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)
+	{
+		return true;
+	}
+	//if he move up by two square and a piece is there
+	else if (move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + (2 * addPlace) == move[DST_NUM] &&
+		board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)
+	{
+		return true;
+	}
+	move = saveOriginalMove;
+	return false;
 }
 
 bool Manager::isBlock(IPiece* piece, std::string move)

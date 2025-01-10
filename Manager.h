@@ -2,6 +2,9 @@
 #include "King.h"
 #include "Knight.h"
 #include "Pawn.h"
+#include "Queen.h"
+#include "Rook.h"
+#include "Bishops.h"
 #include "Pipe.h"
 
 #define CODE_PASS '0'
@@ -30,7 +33,7 @@ public:
 	void InitializingBoard(std::string gameBoard);
 	Pipe connectFronted();
 	IPiece* type(std::string move);
-	bool isYours(std::string place);
+	bool pawnEatCheck(std::string move, IPiece* piece);
 	bool isBlock(IPiece* piece, std::string move);
 	bool selfCheck(std::string move,IPiece* piece,bool whiteTurn);
 	bool isCheck(std::string move);
