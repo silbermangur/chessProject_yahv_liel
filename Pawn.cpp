@@ -50,13 +50,13 @@ int Pawn::IsValid(std::string move)
     //because in here we does not have a connection with the main board
 
     //checking if the pawn do one of it regular move to nullify the number of moves he allready done
-    if ((move[SRC_NUM] == move[DST_NUM] - 1 || move[DST_NUM] == move[DST_NUM] + 1) && (move[SRC_LETTER] == move[DST_LETTER] + 1) ||//checking if he move in diagonal
+    if (((move[SRC_LETTER] == move[DST_LETTER] - 1 || move[SRC_LETTER] == move[DST_LETTER] + 1) && (move[SRC_NUM] + 1 == move[DST_NUM])) ||//checking if he move in diagonal
         (move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] == move[DST_NUM] - 1))//checking if he goes up by one square
     {
         _moves = 0;
     }
     //check code 6(if it ilegal move to do)
-    if (!((move[SRC_LETTER] == move[DST_LETTER] - 1 || move[DST_LETTER] == move[DST_LETTER] + 1) && (move[SRC_NUM] + 1 == move[DST_NUM])) &&//checking if he eat in diagonal
+    if (!((move[SRC_LETTER] == move[DST_LETTER] - 1 || move[SRC_LETTER] == move[DST_LETTER] + 1) && (move[SRC_NUM] + 1 == move[DST_NUM])) &&//checking if he eat in diagonal
         !(move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + 1 == move[DST_NUM]) &&//checking if he goes up by one square
         !(move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] + 2 == move[DST_NUM] && _moves == 0))//check if he goes by two squares up in the first move he does     
     {
