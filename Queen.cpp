@@ -41,4 +41,5 @@ int Queen::IsValid(std::string move)
     }
 
     return 0;
+
 }
