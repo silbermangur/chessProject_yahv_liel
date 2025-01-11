@@ -47,12 +47,15 @@ void Manager::play()
 			}
 			else
 			{
-				pieceCode = piece->Move(move, board);
-				codeMsg[0] = static_cast<char>('0' + pieceCode);
-				/*if (codeMsg[0] == '0' && isBlock(piece,move))
+				if (codeMsg[0] == '0' && isBlock(piece,move))
 				{
 					codeMsg[0] = '6';
-				}*/
+				}
+				else
+				{
+					pieceCode = piece->Move(move, board);
+					codeMsg[0] = static_cast<char>('0' + pieceCode);
+				}
 			}
 		}
 		
@@ -173,6 +176,9 @@ IPiece* Manager::type(std::string move)
 	return board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR];
 }
 
+//the function check if a pawn try to eat a piece witout he capeable of
+// move - the move the pwan try to do
+// piece - the pawn piece 
 bool Manager::pawnEatCheck(std::string move,IPiece* piece)
 {
 	std::string saveOriginalMove = move;
@@ -203,17 +209,17 @@ bool Manager::pawnEatCheck(std::string move,IPiece* piece)
 	return false;
 }
 
+//check if thw way of the piece describe by a move is not block
+//piece - the piece that try to move
+//move - the move that the piece try to do
+//return true if the way blocked and false else
 bool Manager::isBlock(IPiece* piece, std::string move)
 {
-	if (piece->IsValid("e4e5") && piece->IsValid("e4d3") && !piece->IsValid("e4e6"))//check if it a king
+	if (piece->IsValid("e4e5") == 0 && piece->IsValid("e4d3") == 0 && piece->IsValid("e4e6") != 0)//check if it a king
 	{
-		if (board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)//check if the place is clear
-		{
-			return false;
-		}
-		return true;
+		return false;//the king move by one space at a time and he can eat in all of them
 	}
-	else if (piece->IsValid("e4e5") && piece->IsValid("e4d3") && piece->IsValid("e4e6"))//check if it a queen
+	else if (piece->IsValid("e4e5") == 0 && piece->IsValid("e4d3") == 0 && piece->IsValid("e4e6") == 0)//check if it a queen
 	{
 		int joinToI = 1,joinToJ = 1;
 		int iTo = 8, jTo = 8;
@@ -284,44 +290,46 @@ bool Manager::isBlock(IPiece* piece, std::string move)
 		}
 		return true;
 	}
-	else if (piece->IsValid("b2d3"))//check if it a Knight
+	else if (piece->IsValid("b2d3") == 0)//check if it a Knight
 	{
-		if (board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr && //first need to be check if there are a piece in the place
-			board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR]->isWhite == piece->isWhite)//check if at the dest it the same color
-		{
-			return false;
-		}
-		return true;
+		return false;//the knight is *jumping* so it doesnt need to be check and he can eat in all the places he jump to
 	}
-	else if (piece->IsValid("e4e5") && piece->IsValid("e4f5") && !piece->IsValid("e4e3"))//check if it pawn
+	else if (piece->IsValid("e4e5") == 0 && piece->IsValid("e4f5") == 0 && piece->IsValid("e4e3") != 0)//check if it pawn
 	{
-		if (board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr || // 
-			board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR]->isWhite == piece->isWhite)
+		int moveKind = 1;
+		if (!piece->isWhite)
 		{
-			return false;
+			moveKind = -1;
 		}
-		return true;
+		if ((move[SRC_NUM] + 2 == move[DST_NUM] || move[SRC_NUM] - 2 == move[DST_NUM]) &&//if he move up by to squares(WHITE OR BLACK)
+			board[RIGHT_WALL - move[DST_NUM] + moveKind][move[DST_LETTER] - FLOOR] != nullptr) // if there is a piece one space before the destenation
+		{
+			return true;
+		}
+		return false;
 	}
-	else if (piece->IsValid("e4e7"))//check if it a rook
+	else if (piece->IsValid("e4e7") == 0)//check if it a rook
 	{
 		int joinToI = 1, joinToJ = 1;
 		int iTo = 8, jTo = 8;
+		int conditionAdd = -1;
 		bool foundPiece = false;
 		if (move[SRC_LETTER] == move[DST_LETTER])
 		{
 			if (move[SRC_NUM] - move[DST_NUM] < 0)
 			{
 				joinToI = -1;
+				conditionAdd = 1;
 			}
-			for (int i = static_cast<int>(RIGHT_WALL - move[SRC_NUM]);i < RIGHT_WALL - move[DST_NUM];i += joinToI)
+			for (int i = static_cast<int>(RIGHT_WALL - move[SRC_NUM]);i < RIGHT_WALL - move[DST_NUM] + conditionAdd;i += joinToI)
 			{
-				if (board[RIGHT_WALL - move[SRC_LETTER]][i] != nullptr)
+				if (board[i + move[SRC_NUM]][move[SRC_LETTER] - FLOOR] != nullptr)
 				{
 					foundPiece = true;
 				}
 			}
 		}
-		if (move[SRC_NUM] == move[DST_NUM])
+		else if (move[SRC_NUM] == move[DST_NUM])
 		{
 			if (move[SRC_LETTER] - move[DST_LETTER] < 0)
 			{
