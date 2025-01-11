@@ -34,7 +34,8 @@ int Queen::IsValid(std::string move)
         return 7;
     }
     //check code 7 is before code 6 because 7 is a specific code 6 check
-    if ((std::abs(move[SRC_LETTER] - move[DST_LETTER]) != std::abs(move[SRC_NUM] - move[DST_NUM])) || (!(move[SRC_LETTER] == move[DST_LETTER] || move[SRC_NUM] == move[DST_NUM])))
+    // A move with the queen goes like a move with the Bishop or a move with the Rook and thats way a move that is not one of them is an illegal move
+    if ((std::abs(move[SRC_LETTER] - move[DST_LETTER]) != std::abs(move[SRC_NUM] - move[DST_NUM]))  && !(move[SRC_LETTER] == move[DST_LETTER] || move[SRC_NUM] == move[DST_NUM]))
     {
         return 6;
     }
