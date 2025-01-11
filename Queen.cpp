@@ -15,13 +15,12 @@ int Queen::Move(std::string move, IPiece* board[8][8])
 
 }
 
+
 //the function check if the move the player wants to do is valid
 //move - the move the player wanted to make in this struct <dest><source> for example: "e4e5"
 //the function return the code that need to send to the fronted
 int Queen::IsValid(std::string move)
 {
-    bool legal = false;
-    int heg = 1, wid = 2, temp = 0;
     if (move[SRC_LETTER] > CELLING || move[SRC_LETTER] < FLOOR ||//checking if the source height is in the board
         move[DST_LETTER] > CELLING || move[DST_LETTER] < FLOOR ||//checking if the destination height is in the board
         move[SRC_NUM] > RIGHT_WALL || move[SRC_NUM] < LEFT_WALL ||//checking if the source width is in the board
