@@ -34,7 +34,8 @@ int Bishops::IsValid(std::string move)
         return 7;
     }
     //check code 7 is before code 6 because 7 is a specific code 6 check
-    if ((move[SRC_LETTER]-move[DST_LETTER]) != (move[SRC_NUM]-move[DST_NUM]))
+    // A valid move of bishop is when the distance he made in letters is equal to the distance he made in numbers
+    if (std::abs(move[SRC_LETTER]-move[DST_LETTER]) != std::abs(move[SRC_NUM]-move[DST_NUM]))  
     {
         return 6;
     }
