@@ -8,8 +8,8 @@ int King::Move(std::string move, IPiece* board[8][8])
     int code = 0;
     if (!(code = IsValid(move)))//check if we pass the check as a knight
     {
-        board[RIGHT_WALL - move[3]][move[2] - FLOOR] = board[RIGHT_WALL - move[1]][move[0] - FLOOR];
-        board[RIGHT_WALL - move[1]][move[0] - FLOOR] = nullptr;
+        board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] = board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR];
+        board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = nullptr;
         return 0;
     }
     return code;
@@ -22,14 +22,14 @@ int King::IsValid(std::string move)
 {
     bool codesix = true;
     int i = 0, j = 0, k = 0;
-    if (move[0] > CELLING || move[0] < FLOOR ||//checking if the source height is in the board
-        move[2] > CELLING || move[2] < FLOOR ||//checking if the destination height is in the board
-        move[1] > RIGHT_WALL || move[1] < LEFT_WALL ||//checking if the source width is in the board
-        move[3] > RIGHT_WALL || move[3] < LEFT_WALL)//checking if the destination width is in the board
+    if (move[SRC_LETTER] > CELLING || move[SRC_LETTER] < FLOOR ||//checking if the source height is in the board
+        move[DST_LETTER] > CELLING || move[DST_LETTER] < FLOOR ||//checking if the destination height is in the board
+        move[SRC_NUM] > RIGHT_WALL || move[SRC_NUM] < LEFT_WALL ||//checking if the source width is in the board
+        move[DST_NUM] > RIGHT_WALL || move[DST_NUM] < LEFT_WALL)//checking if the destination width is in the board
     {
         return 5;
     }
-    if (move[0] == move[2] && move[1] == move[3])//check if he try to move the piece to the same location
+    if (move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] == move[DST_NUM])//check if he try to move the piece to the same location
     {
         return 7;
     }
@@ -48,7 +48,7 @@ int King::IsValid(std::string move)
         {
             for (k = 0;k < 2;k++)
             {                
-                if (std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] + k-i)) + static_cast<char>(move[3] + 1-(2*j)))
+                if (std::string(1, move[SRC_LETTER]) + move[SRC_NUM] == std::string(1, static_cast<char>(move[DST_LETTER] + k-i)) + static_cast<char>(move[DST_NUM] + 1-(2*j)))
                 {
                     codesix = false;  
                 }
@@ -59,8 +59,8 @@ int King::IsValid(std::string move)
             break;
         }
     }
-    if (std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] + 1)) + static_cast<char>(move[3]) ||// row+1 | coll
-        std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] - 1)) + static_cast<char>(move[3]))  // row-1 | coll
+    if (std::string(1, move[SRC_LETTER]) + move[SRC_NUM] == std::string(1, static_cast<char>(move[DST_LETTER] + 1)) + static_cast<char>(move[DST_NUM]) ||// row+1 | coll
+        std::string(1, move[SRC_LETTER]) + move[SRC_NUM] == std::string(1, static_cast<char>(move[DST_LETTER] - 1)) + static_cast<char>(move[DST_NUM]))  // row-1 | coll
     {
         codesix = false;
     }
