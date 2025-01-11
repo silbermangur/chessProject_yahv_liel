@@ -9,8 +9,8 @@ int Knight::Move(std::string move, IPiece* board[8][8])
     int code = 0;
     if (!(code = IsValid(move)))//check if we pass the check as a knight
     {
-        board[RIGHT_WALL - move[3]][move[2] - FLOOR] = board[RIGHT_WALL - move[1]][move[0] - FLOOR];
-        board[RIGHT_WALL - move[1]][move[0] - FLOOR] = nullptr;
+        board[RIGHT_WALL - move[3]][move[DST_LETTER] - FLOOR] = board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR];
+        board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = nullptr;
         return 0;
     }
     return code;
@@ -23,25 +23,25 @@ int Knight::IsValid(std::string move)
 {
     bool legal = false;
     int heg = 1, wid = 2,temp = 0;
-    if (move[0] > CELLING || move[0] < FLOOR ||//checking if the source height is in the board
-        move[2] > CELLING || move[2] < FLOOR ||//checking if the destination height is in the board
-        move[1] > RIGHT_WALL || move[1] < LEFT_WALL ||//checking if the source width is in the board
+    if (move[SRC_LETTER] > CELLING || move[SRC_LETTER] < FLOOR ||//checking if the source height is in the board
+        move[DST_LETTER] > CELLING || move[DST_LETTER] < FLOOR ||//checking if the destination height is in the board
+        move[SRC_NUM] > RIGHT_WALL || move[SRC_NUM] < LEFT_WALL ||//checking if the source width is in the board
         move[3] > RIGHT_WALL || move[3] < LEFT_WALL)//checking if the destination width is in the board
     {
         return 5;
     }  
-    if (move[0] == move[2] && move[1] == move[3])//check if he try to move the piece to the same location
+    if (move[SRC_LETTER] == move[DST_LETTER] && move[SRC_NUM] == move[3])//check if he try to move the piece to the same location
     {
         return 7;
     }
     //check code 7 is before code 6 because 7 is a specific code 6 check
     for (int i = 0; i < 4;i++)//the loop activate four times because there are 8 options and we check to each time so 8/2 = 4
     {
-        if (std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] - heg)) + static_cast<char>(move[3] - wid))
+        if (std::string(1, move[SRC_LETTER]) + move[SRC_NUM] == std::string(1, static_cast<char>(move[DST_LETTER] - heg)) + static_cast<char>(move[3] - wid))
         {
             legal = true;
         }
-        if (std::string(1, move[0]) + move[1] == std::string(1, static_cast<char>(move[2] - heg)) + static_cast<char>(move[3] + wid))
+        if (std::string(1, move[SRC_LETTER]) + move[SRC_NUM] == std::string(1, static_cast<char>(move[DST_LETTER] - heg)) + static_cast<char>(move[3] + wid))
         {
             legal = true;
         }
