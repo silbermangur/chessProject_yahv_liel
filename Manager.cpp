@@ -47,26 +47,26 @@ void Manager::play()
 			}
 			else
 			{
-				if (codeMsg[0] == '0' && isBlock(piece,move))
-				{
-					codeMsg[0] = '6';
-				}
-				else
-				{
+				//if (codeMsg[0] == '0' && isBlock(piece,move))
+				//{
+				//	codeMsg[0] = '6';
+				//}
+				//else
+				//{
 					pieceCode = piece->Move(move, board);
 					codeMsg[0] = static_cast<char>('0' + pieceCode);
-				}
+				//}
 			}
 		}
 		
 
-		if (codeMsg[0] != CODE_PASS && isCheck(move))
+		if (codeMsg[0] == CODE_PASS && isCheck(move,piece,whiteTurn))//check if it pass and accured a chess in the last move
 		{
 			codeMsg[0] = '1';
 		}
-		if (codeMsg[0] == CODE_PASS)//check if it pass all the tests
+		if (codeMsg[0] == CODE_PASS || codeMsg[0] == '1')//check if it pass all the tests or happend a chess in the last move
 		{
-			whiteTurn = not whiteTurn;
+			whiteTurn = not whiteTurn;//changing the player who is playing 
 		}
 		fronted.sendMessageToGraphics(codeMsg);//sent the code messege
 		codeMsg[0] = CODE_PASS;//setting for the next move to 0
@@ -414,14 +414,15 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 		for (int j = 0;j < 8 && !kingfound;j++)
 		{
 			if (board[i][j] != nullptr &&
-				board[i][j]->IsValid("e4e5") && board[i][j]->IsValid("e4d3") && !board[i][j]->IsValid("e4e6") && board[i][j]->isWhite != whiteTurn)//check if it a king
-			{																								  //(by a combination of moves only the king return answars like this)
-				kingPlace = std::string(1, static_cast<char>(i + FLOOR)) + static_cast<char>(RIGHT_WALL - j);
-				!kingfound;
+				board[i][j]->IsValid("e4e5") == 0 && board[i][j]->IsValid("e4d3") == 0 && board[i][j]->IsValid("e4e6") != 0 && board[i][j]->isWhite == whiteTurn)//check if it a king of the same player that playing right now
+			{
+				kingPlace = std::string(1, static_cast<char>(j + FLOOR)) + static_cast<char>(RIGHT_WALL - i);
+				kingfound = !kingfound;
 			}
 		}
 	}
-	
+
+
 	//checking if a check is heppening
 	for (int i = 0; i < 8;i++)
 	{
@@ -429,9 +430,9 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 		{
 			if (board[i][j] != nullptr && !board[i][j]->isWhite == whiteTurn)//checking if the the other color do the check to the current color playing
 			{
-				moveToKing = std::string(2, static_cast<char>(i + FLOOR)) + static_cast<char>(RIGHT_WALL - j) + kingPlace;
+				moveToKing = std::string(1, static_cast<char>(j + FLOOR)) + static_cast<char>(RIGHT_WALL - i) + kingPlace;
 				//checking if the move is avaliable  for the piece to do
-				if (board[i][j]->IsValid(moveToKing) == 0 && isBlock(piece,moveToKing))
+				if (board[i][j]->IsValid(moveToKing) == 0 && !isBlock(piece,moveToKing))
 				{
 					//doing the move backwards to does mot destroyd the game
 					board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR];
@@ -457,8 +458,48 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 //the function check if there a check happened after the move succeced
 // move - the current move
 // return true if there are a check and false if there arent a check 
-bool Manager::isCheck(std::string move)
+bool Manager::isCheck(std::string move, IPiece* piece, bool whiteTurn)
 {
+	//variables for the king place
+	std::string kingPlace;
+	bool kingfound = false;
+	//the string to check the move
+	std::string moveToKing;
+
+	//finding the king place
+	for (int i = 0; i < 8 && !kingfound;i++)
+	{
+		for (int j = 0;j < 8 && !kingfound;j++)
+		{
+			if (board[i][j] != nullptr &&
+				board[i][j]->IsValid("e4e5") == 0 && board[i][j]->IsValid("e4d3") == 0 && board[i][j]->IsValid("e4e6") != 0 && board[i][j]->isWhite != whiteTurn)//check if it a king of the other player
+			{
+				kingPlace = std::string(1, static_cast<char>(j + FLOOR)) + static_cast<char>(RIGHT_WALL - i);
+				kingfound = !kingfound;
+			}
+		}
+	}
+
+
+	//checking if a check is heppening
+	for (int i = 0; i < 8;i++)
+	{
+		for (int j = 0;j < 8;j++)
+		{
+			if (board[i][j] != nullptr && board[i][j]->isWhite == whiteTurn)//checking if the the current color do the check to the other color playing
+			{
+				moveToKing = std::string(1, static_cast<char>(j + FLOOR)) + static_cast<char>(RIGHT_WALL - i) + kingPlace;
+				//checking if the move is avaliable  for the piece to do
+				if (board[i][j]->IsValid(moveToKing) == 0 && !isBlock(piece, moveToKing))
+				{
+
+					//if ths piece avaliable of the move returning true
+					return true;
+				}
+			}
+		}
+	}
+	//if there aren't a piece that can do a move to kill the king returning false
 	return false;
 }
 

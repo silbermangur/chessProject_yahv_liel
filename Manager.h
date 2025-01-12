@@ -36,7 +36,7 @@ public:
 	bool pawnEatCheck(std::string move, IPiece* piece);
 	bool isBlock(IPiece* piece, std::string move);
 	bool selfCheck(std::string move,IPiece* piece,bool whiteTurn);
-	bool isCheck(std::string move);
+	bool isCheck(std::string move, IPiece* piece, bool whiteTurn);
 	//bool isMate(std::string move);
 };
 
