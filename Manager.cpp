@@ -47,15 +47,15 @@ void Manager::play()
 			}
 			else
 			{
-				//if (codeMsg[0] == '0' && isBlock(piece,move))
-				//{
-				//	codeMsg[0] = '6';
-				//}
-				//else
-				//{
+				if (codeMsg[0] == '0' && isBlock(piece,move))
+				{
+					codeMsg[0] = '6';
+				}
+				else
+				{
 					pieceCode = piece->Move(move, board);
 					codeMsg[0] = static_cast<char>('0' + pieceCode);
-				//}
+				}
 			}
 		}
 		
@@ -310,52 +310,60 @@ bool Manager::isBlock(IPiece* piece, std::string move)
 	}
 	else if (piece->IsValid("e4e7") == 0)//check if it a rook
 	{
-		int joinToI = 1, joinToJ = 1;
-		int iTo = 8, jTo = 8;
-		int conditionAdd = -1;
-		bool foundPiece = false;
-		if (move[SRC_LETTER] == move[DST_LETTER])
+		if (move[SRC_LETTER] == move[DST_LETTER])//move in veltical line
 		{
-			if (move[SRC_NUM] - move[DST_NUM] < 0)
+			if (move[SRC_NUM] - move[DST_NUM] < 0)//move upwards
 			{
-				joinToI = -1;
-				conditionAdd = 1;
-			}
-			for (int i = static_cast<int>(RIGHT_WALL - move[SRC_NUM]);i < RIGHT_WALL - move[DST_NUM] + conditionAdd;i += joinToI)
-			{
-				if (board[i + move[SRC_NUM]][move[SRC_LETTER] - FLOOR] != nullptr)
+				for (int i = 1;i < move[DST_NUM] - move[SRC_NUM];i++)
 				{
-					foundPiece = true;
+					if (board[(RIGHT_WALL - move[SRC_NUM]) - i][move[SRC_LETTER] - FLOOR] != nullptr)
+					{
+						return true;
+					}
 				}
+				return false;
 			}
-		}
-		else if (move[SRC_NUM] == move[DST_NUM])
-		{
-			if (move[SRC_LETTER] - move[DST_LETTER] < 0)
+			else if (move[SRC_NUM] - move[DST_NUM] > 0)//move downwards
 			{
-				joinToJ = -1;
-			}
-			for (int J = static_cast<int>(CELLING - move[SRC_LETTER]);J < CELLING - move[DST_LETTER];J += joinToI)
-			{
-				if (board[J][move[SRC_NUM] - FLOOR] != nullptr)
+				for (int i = 1;i < move[SRC_NUM] - move[DST_NUM];i++)
 				{
-					foundPiece = true;
+					if (board[(RIGHT_WALL - move[SRC_NUM]) + i][move[SRC_LETTER] - FLOOR] != nullptr)
+					{
+						return true;
+					}
 				}
+				return false;
 			}
 		}
-		if (board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr && //first need to be check if there are a piece in the place
-			board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR]->isWhite && piece->isWhite)//check if at the dest it the same color
+		else if (move[SRC_NUM] == move[DST_NUM])//move in horizonal line
 		{
-			foundPiece = true;
-		}
-		if (foundPiece)
-		{
-			return false;
-		}
-		return true;
+			if (move[SRC_LETTER] - move[DST_LETTER] < 0)//move right
+			{
+				for (int i = 1;i < move[DST_LETTER] - move[SRC_LETTER]; i++)
+				{
+					if (board[RIGHT_WALL - move[SRC_NUM]][(move[SRC_LETTER] - FLOOR) + i] != nullptr)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			else if (move[SRC_LETTER] - move[DST_LETTER] > 0)//move left
+			{
+				for (int i = 1;i < move[SRC_LETTER] - move[DST_LETTER]; i++)
+				{
+					if (board[RIGHT_WALL - move[SRC_NUM]][(move[SRC_LETTER] - FLOOR) - i] != nullptr)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}		
 	}
 	else//it a bishop
 	{
+
 		int joinToI = 1, joinToJ = 1;
 		int iTo = 8, jTo = 8;
 		bool foundPiece = false;
@@ -432,7 +440,7 @@ bool Manager::selfCheck(std::string move, IPiece* piece, bool whiteTurn)
 			{
 				moveToKing = std::string(1, static_cast<char>(j + FLOOR)) + static_cast<char>(RIGHT_WALL - i) + kingPlace;
 				//checking if the move is avaliable  for the piece to do
-				if (board[i][j]->IsValid(moveToKing) == 0 && !isBlock(piece,moveToKing))
+				if (board[i][j]->IsValid(moveToKing) == 0 && !isBlock(board[i][j],moveToKing))
 				{
 					//doing the move backwards to does mot destroyd the game
 					board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR];
@@ -490,7 +498,7 @@ bool Manager::isCheck(std::string move, IPiece* piece, bool whiteTurn)
 			{
 				moveToKing = std::string(1, static_cast<char>(j + FLOOR)) + static_cast<char>(RIGHT_WALL - i) + kingPlace;
 				//checking if the move is avaliable  for the piece to do
-				if (board[i][j]->IsValid(moveToKing) == 0 && !isBlock(piece, moveToKing))
+				if (board[i][j]->IsValid(moveToKing) == 0 && !isBlock(board[i][j], moveToKing))
 				{
 
 					//if ths piece avaliable of the move returning true
