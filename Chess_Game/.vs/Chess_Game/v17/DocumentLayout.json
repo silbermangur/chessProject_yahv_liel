@@ -1,0 +1,134 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Bishops.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|solutionrelative:Bishops.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Knight.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|solutionrelative:Knight.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Rook.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|solutionrelative:Rook.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Pawn.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|solutionrelative:Pawn.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Queen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|solutionrelative:Queen.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Manager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|solutionrelative:Manager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\King.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1DA1A64E-5CCD-447A-92C4-28EED8E5F5BC}|Chess_Game.vcxproj|solutionrelative:King.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Rook.cpp",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Rook.cpp",
+              "RelativeDocumentMoniker": "Rook.cpp",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Rook.cpp",
+              "RelativeToolTip": "Rook.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T16:55:20.367Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Queen.cpp",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Queen.cpp",
+              "RelativeDocumentMoniker": "Queen.cpp",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Queen.cpp",
+              "RelativeToolTip": "Queen.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T16:55:11.972Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "King.cpp",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\King.cpp",
+              "RelativeDocumentMoniker": "King.cpp",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\King.cpp",
+              "RelativeToolTip": "King.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T16:54:24.131Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Pawn.cpp",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Pawn.cpp",
+              "RelativeDocumentMoniker": "Pawn.cpp",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Pawn.cpp",
+              "RelativeToolTip": "Pawn.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T16:53:52.212Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Knight.cpp",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Knight.cpp",
+              "RelativeDocumentMoniker": "Knight.cpp",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Knight.cpp",
+              "RelativeToolTip": "Knight.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T16:53:45.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Bishops.cpp",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Bishops.cpp",
+              "RelativeDocumentMoniker": "Bishops.cpp",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Bishops.cpp",
+              "RelativeToolTip": "Bishops.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-15T16:53:17.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Manager.cpp",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Manager.cpp",
+              "RelativeDocumentMoniker": "Manager.cpp",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\came_with_computer\\now\\magshimim_yahav_avraham_ochana_week3\\Chess_Game\\Manager.cpp",
+              "RelativeToolTip": "Manager.cpp",
+              "ViewState": "AQIAANAAAAAAAAAAAAAlwN0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-02T17:05:27.622Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
