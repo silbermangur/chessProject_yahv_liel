@@ -7,6 +7,10 @@ int Rook::Move(std::string move, IPiece* board[8][8])
     int code = 0;
     if (!(code = IsValid(move)))//check if we pass the check as a knight
     {
+        if (board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] != nullptr)
+        {
+            delete(board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR]);
+        }
         board[RIGHT_WALL - move[DST_NUM]][move[DST_LETTER] - FLOOR] = board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR];
         board[RIGHT_WALL - move[SRC_NUM]][move[SRC_LETTER] - FLOOR] = nullptr;
         return 0;
